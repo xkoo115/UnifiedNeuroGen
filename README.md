@@ -1,7 +1,7 @@
 # UnifiedNeuroGen
 
 [![Paper](https://img.shields.io/badge/Paper-arXiv:2506.02433-b31b1b.svg)](https://arxiv.org/abs/2506.02433)
-[![License: MIT](httpshttpss://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This repository contains the official PyTorch implementation for the paper: **"Empowering Functional Neuroimaging: A Pre-trained Generative Framework for Unified Representation of Neural Signals."** The paper has now been submitted to nature biomedical engineering.
 

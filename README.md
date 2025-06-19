@@ -29,7 +29,7 @@ Follow these steps to set up and run the project.
 This project uses a `requirements.txt` file to manage dependencies. Ensure you have Python and pip installed.
 ```bash
 # Clone the repository
-git clone [https://github.com/your-username/UnifiedNeuroGen.git](https://github.com/your-username/UnifiedNeuroGen.git)
+git clone https://github.com/xkoo115/UnifiedNeuroGen
 cd UnifiedNeuroGen
 
 # Install the required packages

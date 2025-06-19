@@ -81,9 +81,8 @@ After the model is trained, use the `sample.py` script to load the checkpoint an
 
 - `train.py`: The main script for training the model, with support for distributed training.
 - `sample.py`: The script for loading a trained model to perform inference/sampling.
-- `dataloader.py`: Defines the data loader. **You must configure your data paths here**.
-- `models.py`: Contains the core DiT model architecture.
-- `diffusion.py`: Implements the diffusion model's sampling and loss logic.
+- `dataloader.py`: Defines the data loader. **You can configure your training set paths here**.
+- `models.py`: Contains the core DiT model architecture. **Modify the model parameters here**.
 - `requirements.txt`: A list of all Python dependencies for the project.
 
 ## 📜 Citation

@@ -43,7 +43,7 @@ pip install -r requirements.txt
 This project requires paired, preprocessed neural signal data (e.g., EEG and fMRI).
 - Open the `dataloader.py` file.
 - Locate the `Pair_Loader_Nat` class.
-- **Modify the file paths**: Replace the hard-coded placeholder paths, such as `"path to eeg encoding in training set"` and `"path/to/training_set/eeg_encoding/"`, with the actual paths to your preprocessed data.
+- **Modify the file paths**: Replace the hard-coded placeholder paths, such as `"path/to/training_set/eeg_encoding/"`, with the actual paths to your preprocessed data.
 
 #### 2. Train the Model
 

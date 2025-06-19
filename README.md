@@ -3,7 +3,7 @@
 [![Paper](https://img.shields.io/badge/Paper-arXiv:2506.02433-b31b1b.svg)](https://arxiv.org/abs/2506.02433)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains the official PyTorch implementation for the paper: **"Empowering Functional Neuroimaging: A Pre-trained Generative Framework for Unified Representation of Neural Signals."** The paper has now been submitted to **_Nature Biomedical Engineering_**.
+This repository contains the official PyTorch implementation for the paper: **"Empowering Functional Neuroimaging: A Pre-trained Generative Framework for Unified Representation of Neural Signals."**
 
 > **Abstract:** *Multimodal functional neuroimaging enables systematic analysis of brain mechanisms and provides discriminative representations for brain-computer interface (BCI) decoding. However, its acquisition is constrained by high costs and feasibility limitations. Moreover, underrepresentation of specific groups undermines fairness of BCI decoding model. To address these challenges, we propose a unified representation framework for multimodal functional neuroimaging via generative artificial intelligence (AI). By mapping multimodal functional neuroimaging into a unified representation space, the proposed framework is capable of generating data for acquisition-constrained modalities and underrepresented groups. Experiments show that the framework can generate data consistent with real brain activity patterns, provide insights into brain mechanisms, and improve performance on downstream tasks. More importantly, it can enhance model fairness by augmenting data for underrepresented groups.*
 

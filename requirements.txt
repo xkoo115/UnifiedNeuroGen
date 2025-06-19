@@ -1,0 +1,11 @@
+numpy~=1.26.4
+timm~=0.9.16
+einops~=0.8.0
+torchvision~=0.17.1
+librosa~=0.10.1
+matplotlib~=3.8.3
+tqdm~=4.66.2
+scipy~=1.12.0
+nibabel~=5.2.1
+h5py~=3.10.0
+pillow~=10.2.0

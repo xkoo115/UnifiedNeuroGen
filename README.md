@@ -17,7 +17,7 @@ This project introduces a generative AI framework built on these core ideas:
 - ✨ **Enhanced Fairness and Accessibility**: By synthesizing data for underrepresented groups or tasks, the framework improves the fairness of downstream BCI decoding models and dramatically lowers the barrier to entry for advanced neuroimaging research.
 
 ![Framework Diagram](./assets/fig1.png)
-> **Figure 1**: A schematic of the framework, illustrating how a low-cost modality (EEG) is transformed into high-cost neuroimaging signals through the unified representation learning framework.
+> A schematic of the framework, illustrating how a low-cost modality (EEG) is transformed into high-cost neuroimaging signals through the unified representation learning framework.
 
 
 ## 🚀 Getting Started

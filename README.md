@@ -47,7 +47,7 @@ This project requires paired, preprocessed neural signal data (e.g., EEG and fMR
 
 #### 2. Train the Model
 
-Once your data is ready, run the main training script `train.py` to train the DiT model. The script supports distributed multi-GPU training.
+Once your data is ready, run the main training script `train.py` to train the DiT model. The script supports distributed multi-GPU training. A GPU with at least 24 GB of VRAM is recommended.
 
 - **For single-GPU training:**
   ```bash

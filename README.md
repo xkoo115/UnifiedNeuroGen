@@ -19,6 +19,55 @@ This project introduces a generative AI framework built on these core ideas:
 ![Framework Diagram](./assets/fig1.png)
 > A schematic of the framework, illustrating how a low-cost modality (EEG) is transformed into high-cost neuroimaging signals through the unified representation learning framework.
 
+---
+
+## ⚡ Quickstart: Run the Demo
+
+We provide a pre-trained demo model and a corresponding dataset sample for quick inference and validation.
+
+* **Demo Model**: [xkoo115/UnifiedNeuroGen-Demo](https://huggingface.co/xkoo115/UnifiedNeuroGen-Demo)
+* **Demo Dataset**: [xkoo115/UnifiedNeuroGen-Demo-Dataset](https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset)
+
+### Instructions
+1.  **Clone this repository and install dependencies:**
+    ```bash
+    git clone [https://github.com/xkoo115/UnifiedNeuroGen](https://github.com/xkoo115/UnifiedNeuroGen)
+    cd UnifiedNeuroGen
+    pip install -r requirements.txt
+    ```
+
+2.  **Download the Demo Model:**
+    Download the `.pt` file from the [Hugging Face Model Hub](https://huggingface.co/xkoo115/unifiedneurogen-eeg2fmri-nat-view-within-subject-demo/tree/main) and place it in a `checkpoints` folder inside the `UnifiedNeuroGen` directory.
+
+3.  **Download the Demo Dataset:**
+    Clone the dataset repository next to your project folder.
+    ```bash
+    # From outside the UnifiedNeuroGen directory
+    git lfs install
+    git clone [https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset](https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset)
+    ```
+
+4.  **Run Inference:**
+    Execute the `sample.py` script with the paths to the demo model and data.
+    ```bash
+    python sample.py \
+      --model DiT_fMRI \
+      --ckpt ./checkpoints/unifiedneurogen-eeg2fmri-nat-view-within-subject-demo.pt \
+      --eeg-path ../UnifiedNeuroGen-Demo-Dataset/eeg_encodings \
+      --save-path ./demo_results
+    ```
+    The generated fMRI data will be saved in the `demo_results` folder.
+
+> **Note on Performance:** The demo dataset contains **289 data segments**. On an NVIDIA RTX 3090 GPU, the approximate runtime for generating fMRI for all segments is **2 hours and 34 minutes**.
+
+---
+
+## 💾 Datasets
+
+* **Complete Datasets**: All preprocessed datasets used in our paper are available for download on the Science Data Bank: [https://www.scidb.cn/detail?dataSetId=420a641c6eaf4479b3fc0e694e1ad9cc](https://www.scidb.cn/detail?dataSetId=420a641c6eaf4479b3fc0e694e1ad9cc)
+* **Demo Dataset Sample**: For quick testing, a small, preprocessed sample is available on Hugging Face: [UnifiedNeuroGen-Demo-Dataset](https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset).
+
+---
 
 ## 🚀 Getting Started
 

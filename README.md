@@ -21,7 +21,7 @@ This project introduces a generative AI framework built on these core ideas:
 
 ---
 
-If you require detailed implementation, please contact xuhangc@hzu.edu.cn for complete code.
+If you require detailed implementation, please contact wh.yao@siat.ac.cn or xx.chen2@siat.ac.cn for complete code.
 
 ## 📄 License
 

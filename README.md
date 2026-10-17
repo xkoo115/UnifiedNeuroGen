@@ -1,160 +1,143 @@
 # UnifiedNeuroGen
 
-[![Paper](https://img.shields.io/badge/Paper-arXiv:2506.02433-b31b1b.svg)](https://arxiv.org/abs/2506.02433)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Core code for **A generative framework for unified representations bridging electrophysiological and haemodynamic brain activity**.
 
-This repository contains the official PyTorch implementation for the paper: **"Empowering Functional Neuroimaging: A Pre-trained Generative Framework for Unified Representation of Neural Signals."**
+EEG-conditioned generation of BOLD and haemoglobin representations, with the original diffusion implementation and the target-specific generators used in the revised work. This release concentrates on generation: model fitting, saved transformations and inference. The demo data and checkpoint are distributed separately.
 
-> **Abstract:** *Multimodal functional neuroimaging enables systematic analysis of brain mechanisms and provides discriminative representations for brain-computer interface (BCI) decoding. However, its acquisition is constrained by high costs and feasibility limitations. Moreover, underrepresentation of specific groups undermines fairness of BCI decoding model. To address these challenges, we propose a unified representation framework for multimodal functional neuroimaging via generative artificial intelligence (AI). By mapping multimodal functional neuroimaging into a unified representation space, the proposed framework is capable of generating data for acquisition-constrained modalities and underrepresented groups. Experiments show that the framework can generate data consistent with real brain activity patterns, provide insights into brain mechanisms, and improve performance on downstream tasks. More importantly, it can enhance model fairness by augmenting data for underrepresented groups.*
+## Installation
 
-## 📝 About The Project
+Python 3.10 or newer is required. The small demo runs on a CPU; the original full DiT models require substantially more memory and are intended for GPU use.
 
-**UnifiedNeuroGen** addresses the significant challenges in neuroimaging: the high cost and limited accessibility of advanced modalities like fMRI, and the resulting fairness issues in AI models due to biased or underrepresented data.
-
-This project introduces a generative AI framework built on these core ideas:
-- 🧠 **Unified Representation**: It learns to map diverse neural signals (e.g., low-cost EEG and high-cost fMRI) into a shared, unified feature space.
-- 🧬 **Cross-Modal Generation**: It uses a pre-trained **Diffusion Transformer (DiT)** model to generate high-fidelity, high-cost neuroimaging data (like fMRI or fNIRS) from low-cost, easily accessible signals (like EEG).
-- ✨ **Enhanced Fairness and Accessibility**: By synthesizing data for underrepresented groups or tasks, the framework improves the fairness of downstream BCI decoding models and dramatically lowers the barrier to entry for advanced neuroimaging research.
-
-![Framework Diagram](./assets/fig1.png)
-> A schematic of the framework, illustrating how a low-cost modality (EEG) is transformed into high-cost neuroimaging signals through the unified representation learning framework.
-
----
-
-## ⚡ Quickstart: Run the Demo
-
-We provide a pre-trained demo model and a corresponding dataset sample for quick inference and validation.
-
-* **Demo Model**: [xkoo115/UnifiedNeuroGen-Demo](https://huggingface.co/xkoo115/UnifiedNeuroGen-Demo)
-* **Demo Dataset**: [xkoo115/UnifiedNeuroGen-Demo-Dataset](https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset)
-
-### Instructions
-1.  **Clone this repository and install dependencies:**
-    ```bash
-    git clone [https://github.com/xkoo115/UnifiedNeuroGen](https://github.com/xkoo115/UnifiedNeuroGen)
-    cd UnifiedNeuroGen
-    pip install -r requirements.txt
-    ```
-
-2.  **Download the Demo Model:**
-    Download the `.pt` file from the [Hugging Face Model Hub](https://huggingface.co/xkoo115/unifiedneurogen-eeg2fmri-nat-view-within-subject-demo/tree/main) and place it in a `checkpoints` folder inside the `UnifiedNeuroGen` directory.
-
-3.  **Download the Demo Dataset:**
-    Clone the dataset repository next to your project folder.
-    ```bash
-    # From outside the UnifiedNeuroGen directory
-    git lfs install
-    git clone [https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset](https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset)
-    ```
-
-4.  **Run Inference:**
-    Execute the `sample.py` script with the paths to the demo model and data.
-    ```bash
-    python sample.py \
-      --model DiT_fMRI \
-      --ckpt ./checkpoints/unifiedneurogen-eeg2fmri-nat-view-within-subject-demo.pt \
-      --eeg-path ../UnifiedNeuroGen-Demo-Dataset/eeg_encodings \
-      --save-path ./demo_results
-    ```
-    The generated fMRI data will be saved in the `demo_results` folder.
-
-> **Note on Performance:** The demo dataset contains **289 data segments**. On an NVIDIA RTX 3090 GPU, the approximate runtime for generating fMRI for all segments is **2 hours and 34 minutes**.
-
----
-
-## 💾 Datasets
-
-* **Complete Datasets**: All preprocessed datasets used in our paper are available for download on the Science Data Bank: [https://www.scidb.cn/detail?dataSetId=420a641c6eaf4479b3fc0e694e1ad9cc](https://www.scidb.cn/detail?dataSetId=420a641c6eaf4479b3fc0e694e1ad9cc)
-* **Demo Dataset Sample**: For quick testing, a small, preprocessed sample is available on Hugging Face: [UnifiedNeuroGen-Demo-Dataset](https://huggingface.co/datasets/xkoo115/UnifiedNeuroGen-Demo-Dataset).
-
----
-
-## 🚀 Getting Started
-
-Follow these steps to set up and run the project.
-
-### 📦 Prerequisites
-
-This project uses a `requirements.txt` file to manage dependencies. Ensure you have Python and pip installed.
 ```bash
-# Clone the repository
-git clone https://github.com/xkoo115/UnifiedNeuroGen
+git clone https://github.com/xkoo115/UnifiedNeuroGen.git UnifiedNeuroGen
 cd UnifiedNeuroGen
-
-# Install the required packages
-pip install -r requirements.txt
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
 ```
 
-### ⚙️ Usage Workflow
+The versions used for local validation are recorded in [docs/validated_environment.txt](docs/validated_environment.txt).
 
-#### 1. Prepare Your Data
+## Quick start
 
-This project requires paired, preprocessed neural signal data (e.g., EEG and fMRI).
-- Open the `dataloader.py` file.
-- Locate the `Pair_Loader_Nat` class.
-- **Modify the file paths**: Replace the hard-coded placeholder paths, such as `"path/to/training_set/eeg_encoding/"`, with the actual paths to your preprocessed data.
+Download the real demo data and checkpoint from the [v0.2.0 Release](https://github.com/xkoo115/UnifiedNeuroGen/releases/tag/v0.2.0). The demo ZIP is about 8.7 MB and is distributed as a Release attachment, separately from Git history.
 
-#### 2. Train the Model
+From the repository root, download and verify the ZIP before extracting it:
 
-Once your data is ready, run the main training script `train.py` to train the DiT model. The script supports distributed multi-GPU training. A GPU with at least 24 GB of VRAM is recommended.
-
-- **For single-GPU training:**
-  ```bash
-  python train.py --global-batch-size [YOUR_BATCH_SIZE] --results-dir ./results
-  ```
-- **For multi-GPU distributed training (Recommended):**
-  ```bash
-  # Example for 2 GPUs
-  torchrun --nproc_per_node 2 train.py --global-batch-size [YOUR_BATCH_SIZE] --results-dir ./results
-  ```
-
-During training, model checkpoints will be automatically saved in the directory specified by `--results-dir` (defaults to `./results/`).
-
-#### 3. Generate/Sample Data
-
-After the model is trained, use the `sample.py` script to load the checkpoint and generate data for the target modality from input EEG signals.
-
-- Run the following command:
-  ```bash
-  python sample.py \
-    --model DiT_fMRI \
-    --ckpt ./results/[EXPERIMENT_FOLDER]/checkpoints/[CHECKPOINT_NAME].pt \
-    --eeg-path /path/to/your/test/eeg/encodings \
-    --save-path /path/to/save/generated/data
-  ```
-  - `--ckpt`: Path to your trained model checkpoint file (`.pt`) from Step 2.
-  - `--eeg-path`: Path to the test set of EEG encodings you want to use for generation.
-  - `--save-path`: Directory where the generated data will be saved.
-
-## 📁 File Structure
-
-- `train.py`: The main script for training the model, with support for distributed training.
-- `sample.py`: The script for loading a trained model to perform inference/sampling.
-- `dataloader.py`: Defines the data loader. **You can configure your training set paths here**.
-- `models.py`: Contains the core DiT model architecture. **Modify the model parameters here**.
-- `requirements.txt`: A list of all Python dependencies for the project.
-
-## 📜 Citation
-
-If you use this project in your research, please cite our paper:
-
-```bibtex
-@misc{yao2025empoweringfunctionalneuroimagingpretrained,
-      title={Empowering Functional Neuroimaging: A Pre-trained Generative Framework for Unified Representation of Neural Signals}, 
-      author={Weiheng Yao and Xuhang Chen and Shuqiang Wang},
-      year={2025},
-      eprint={2506.02433},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2506.02433}, 
-}
+```bash
+curl -fL --retry 3 -o UnifiedNeuroGen-demo.zip \
+  https://github.com/xkoo115/UnifiedNeuroGen/releases/download/v0.2.0/UnifiedNeuroGen-demo.zip
+curl -fL --retry 3 -o UnifiedNeuroGen-demo.zip.sha256 \
+  https://github.com/xkoo115/UnifiedNeuroGen/releases/download/v0.2.0/UnifiedNeuroGen-demo.zip.sha256
+shasum -a 256 -c UnifiedNeuroGen-demo.zip.sha256
+unzip UnifiedNeuroGen-demo.zip -d ..
 ```
 
-## 📄 License
+On Linux, `sha256sum -c UnifiedNeuroGen-demo.zip.sha256` is an alternative checksum command. The extracted layout is:
 
-This project is licensed under the [MIT License](LICENSE).
+```text
+UnifiedNeuroGen/
+UnifiedNeuroGen-demo/
+```
 
-## 🙏 Acknowledgments
+From the repository root, run:
 
-- Our model architecture is inspired by the work of the [DiT](https://github.com/facebookresearch/DiT) authors.
-- We thank the contributors of the public datasets used in this study.
+```bash
+python -m unifiedneurogen demo \
+  --data-dir ../UnifiedNeuroGen-demo \
+  --output outputs/demo
+```
+
+The command checks the demo's SHA-256 manifest, loads the historical M10 fold-01 seed-7 checkpoint, and generates 64-dimensional conditional means and Gaussian samples from 48 real EEG feature vectors. It also projects the means to the 5,124-value prepared surface coordinates. The reference BOLD arrays are unnecessary for inference. See `outputs/demo/report.json` and `outputs/demo/generated.npz`.
+
+A successful run reports `"status": "PASS"`, `"samples": 48`, `"latent_shape": [48, 64]`, `"surface_shape": [48, 5124]` and `"target_required_at_inference": false`. The CPU computation takes approximately one second on the validated machine, excluding installation and startup. To repeat it, choose a fresh output directory, such as `--output outputs/demo_second_run`.
+
+The surface values are in the run-centred, preprocessed target coordinates. They do not restore the removed run means. The small sample illustrates the generation interface; it does not estimate the manuscript's aggregate metrics.
+
+## Implementations
+
+| Module | Input and generated output | Role |
+| --- | --- | --- |
+| `dit.py` + `diffusion/` | Surface EEG encodings to BOLD surface values through DDIM | Original EEG-to-fMRI diffusion generator |
+| `gdit.py` + `diffusion/` | EEG encodings to stacked haemoglobin tokens through DDIM | Original EEG-to-Hb diffusion generator |
+| `m10.py` | 2,928 EEG log-power coordinates to a conditional Gaussian over 64 target PCA coefficients | Revised BOLD representation generator; included real demo checkpoint |
+| `hb.py` | 1,575 EEG response features to 144 Hb mean/slope coordinates | M06 pooled EEG projection and MI/MA-specific response heads |
+| `linear.py` | Prepared EEG histories to regional BOLD dynamics/scale coordinates | M01 and M02 generation primitives and saved-head inference |
+
+The unifying element is the representation workflow. These implementations have distinct target coordinates and fitted weights. In particular, the M10 demo checkpoint is a conditional Gaussian model, and M06 generates response summaries. The original diffusion models use their own encoded inputs.
+
+[Methods and result correspondence](docs/methods.md) describes these identities and their relation to the revised figures. This core release omits downstream decoding, retrieval, significance testing and figure-production drivers.
+
+## Training and generation
+
+The CLI accepts prepared arrays and explicit configuration files; it has no machine-specific dataset paths.
+
+Generate from EEG alone with the supplied M10 checkpoint:
+
+```bash
+python -m unifiedneurogen m10-sample \
+  --eeg ../UnifiedNeuroGen-demo/samples.npz \
+  --transform ../UnifiedNeuroGen-demo/transforms/fold_transform.npz \
+  --checkpoint ../UnifiedNeuroGen-demo/weights/m10.pt \
+  --config configs/m10.json \
+  --output outputs/m10_generated.npz
+```
+
+Fit a new M10 model using the example's original sample roles and saved fitting transformations:
+
+```bash
+python -m unifiedneurogen m10-train \
+  --data ../UnifiedNeuroGen-demo/samples.npz \
+  --transform ../UnifiedNeuroGen-demo/transforms/fold_transform.npz \
+  --config configs/m10.json \
+  --epochs 2 --batch-size 16 \
+  --output outputs/m10_training
+```
+
+This small refit uses a newly fitted Ridge anchor and four fitting-derived target states. It is a training demonstration, with a user-specified fixed Ridge penalty. The historical checkpoint was fitted on its original full fitting cohort.
+
+The original diffusion branch uses the same portable training and sampling commands:
+
+```bash
+python -m unifiedneurogen dit-train \
+  --data paired_encodings.npz --config configs/dit_fmri.json \
+  --device cuda --output outputs/dit_training
+
+python -m unifiedneurogen dit-sample \
+  --eeg eeg_encodings.npy --checkpoint outputs/dit_training/dit.pt \
+  --config configs/dit_fmri.json --steps 50 --device cuda \
+  --output outputs/dit_generated.npz
+```
+
+For the original Hb model, add `--branch hb` and use `configs/dit_hb.json` in both commands. The full original diffusion checkpoint and upstream EEG encoders are not part of the small demo. A reduced random model for checking the DDPM/DDIM software path is configured in `configs/dit_smoke.json`; it carries no scientific performance claim.
+
+Fit and use the M06 response generator with a fixed configuration:
+
+```bash
+python -m unifiedneurogen hb-train \
+  --data hb_pairs.npz --config configs/hb.json --output outputs/hb_training
+python -m unifiedneurogen hb-sample \
+  --data hb_eeg.npz --checkpoint outputs/hb_training/hb.joblib \
+  --output outputs/hb_generated.npz
+```
+
+[Data formats](docs/data.md) specifies array names, shapes and preprocessing boundaries. CLI outputs must be new files or empty directories. For detailed options, run `python -m unifiedneurogen <command> --help`.
+
+## Validation
+
+```bash
+python -m pip install -e '.[test]'
+python -m pytest -q
+```
+
+Tests cover denoising and DDIM sampling, Gaussian likelihoods, learned temporal weights, fitting/inference boundaries and target transformations. Release verification additionally compares the real demo's deterministic means against saved historical predictions. Production-scale retraining and complete figure reproduction are outside these checks.
+
+## Data, citation and licence
+
+The demo includes derivatives of [NATVIEW](https://fcon_1000.projects.nitrc.org/indi/retro/nat_view.html), distributed with attribution under CC BY 4.0. Its README records data preparation, original participant roles and checkpoint identity.
+
+Citation metadata is in [CITATION.cff](CITATION.cff). The original project's MIT licence is retained in [LICENSE](LICENSE). Third-party portions retain their own terms, including Meta DiT's CC BY-NC 4.0; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Earlier implementation
+
+The original implementation and its Git history are preserved in the [legacy backup repository](https://github.com/xkoo115/UnifiedNeuroGen-legacy-backup-20261017) and the [pre-update snapshot](https://github.com/xkoo115/UnifiedNeuroGen/tree/legacy-before-npj-20261017). The repository address cited in the manuscript is retained for this current core release.

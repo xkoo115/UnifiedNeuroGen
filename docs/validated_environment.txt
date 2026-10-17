@@ -1,0 +1,11 @@
+Local validation on macOS arm64, CPU; Python 3.12.12
+torch==2.13.0
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.0
+joblib==1.5.3
+tqdm==4.70.1
+threadpoolctl==3.6.0
+pytest==9.0.2
+
+These are observed versions, not a cross-platform lock file. Install from pyproject.toml.

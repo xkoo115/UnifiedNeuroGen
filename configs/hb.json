@@ -1,0 +1,7 @@
+{
+  "pca_rank": 128,
+  "latent_rank": 32,
+  "alpha": 1000.0,
+  "seed": 1037,
+  "encoder_rank": 32
+}

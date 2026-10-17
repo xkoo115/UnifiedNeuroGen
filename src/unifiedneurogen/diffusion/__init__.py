@@ -1,7 +1,9 @@
-# Modified from OpenAI's diffusion repos
-#     GLIDE: https://github.com/openai/glide-text2im/blob/main/glide_text2im/gaussian_diffusion.py
-#     ADM:   https://github.com/openai/guided-diffusion/blob/main/guided_diffusion
-#     IDDPM: https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py
+# Modified from OpenAI's diffusion repositories.
+# Source: UnifiedNeuroGen commit 427a4f342ebd0494690a6b4c31186c2084b9b22a.
+# GLIDE: https://github.com/openai/glide-text2im
+# ADM: https://github.com/openai/guided-diffusion
+# IDDPM: https://github.com/openai/improved-diffusion
+# Retain the MIT license and third-party notices supplied with this release.
 
 from . import gaussian_diffusion as gd
 from .respace import SpacedDiffusion, space_timesteps
@@ -9,13 +11,13 @@ from .respace import SpacedDiffusion, space_timesteps
 
 def create_diffusion(
     timestep_respacing,
-    noise_schedule="linear", 
+    noise_schedule="linear",
     use_kl=False,
     sigma_small=False,
     predict_xstart=False,
     learn_sigma=True,
     rescale_learned_sigmas=False,
-    diffusion_steps=1000
+    diffusion_steps=1000,
 ):
     betas = gd.get_named_beta_schedule(noise_schedule, diffusion_steps)
     if use_kl:
@@ -41,6 +43,5 @@ def create_diffusion(
             if not learn_sigma
             else gd.ModelVarType.LEARNED_RANGE
         ),
-        loss_type=loss_type
-        # rescale_timesteps=rescale_timesteps,
+        loss_type=loss_type,
     )

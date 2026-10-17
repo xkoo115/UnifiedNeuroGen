@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "source_revision": "local research source preserved at release preparation",
+  "source_files": [
+    {
+      "path": "src/neurovascular_decoder/latent_decoder.py",
+      "sha256": "dac90d197fe820aec1ac55dbfc2bade1f0d94fbe5b196715307a4bfb081a6788"
+    },
+    {
+      "path": "scripts/run_natview_fmri_capacity_ablation.py",
+      "sha256": "6f77bae5c6ca68c713dc00bf071d42f9a41b1c02cb31fee4071d15a05f110aa0"
+    },
+    {
+      "path": "scripts/practice_shared_hb_functional_20261001.py",
+      "sha256": "91c6d77d4449581c49ff2a08bbb3a9324774c3d87d6a15ca6950f9ad6e8f2953"
+    }
+  ],
+  "released_files": [
+    {
+      "path": "src/unifiedneurogen/m10.py",
+      "sha256": "f3c4e795654c3a0e52802b23969df25c33a61a72d03c50d5584de388390dfc21"
+    },
+    {
+      "path": "src/unifiedneurogen/hb.py",
+      "sha256": "65f4bea526e6338d108a94e20aedd572023343781d44502c67142dfdb0e8e8f3"
+    }
+  ],
+  "m10": {
+    "implementation": "ConditionedFactorizedDecoder: fitted Ridge anchor plus cross-attention residual with a conditional Gaussian output",
+    "core_ast_unchanged_except_docstrings": {
+      "LatentDecoderOutput": true,
+      "_GradientReversalFunction": true,
+      "gradient_reversal": true,
+      "_LatentCrossAttentionBlock": true,
+      "MultiResolutionCrossAttentionDecoder": true,
+      "ConditionedFactorizedDecoder": true,
+      "factorized_condition_loss": true,
+      "low_rank_gaussian_nll": true,
+      "symmetric_alignment_loss": true
+    },
+    "checkpoint_state_keys": 141,
+    "strict_checkpoint_loading": true,
+    "real_demo_rows": 48,
+    "repackaged_vs_original_forward_max_absolute_error": 0.0,
+    "deterministic_and_sampled_outputs_identical": true,
+    "loss_and_131_parameter_gradients_identical": true,
+    "saved_demo_reference_max_absolute_error": 2.384185791015625e-07,
+    "input_standardization": "(features - feature_mean) / feature_std; float32; no clipping",
+    "inference_inputs": "EEG only; target data and within-paradigm class labels are not inputs",
+    "output_coordinates": "64 fitting-fold standardized target PCA coordinates; inverse projection restores run-centred prepared surface coordinates"
+  },
+  "hb": {
+    "implementation": "One pooled EEG StandardScaler/PCA/PLS encoder with separate MI and MA Ridge response heads",
+    "source_fit_core": "practice_shared_hb_functional_20261001.py:99-140, fixed selected paired configuration; downstream selection omitted",
+    "real_events_checked": 3480,
+    "fit_events_retrained": 2160,
+    "selected_config": {
+      "pca_rank": 128,
+      "latent_rank": 32,
+      "alpha": 1000.0,
+      "seed": 1037,
+      "encoder_rank": 32
+    },
+    "repackaged_predict_vs_original_max_absolute_error": 0.0,
+    "repackaged_fit_vs_source_fixed_configuration_max_absolute_error": 0.0,
+    "retrained_vs_saved_original_model_max_absolute_error": 0.0,
+    "inference_inputs": "EEG features plus acquisition protocol MI or MA; no within-protocol class labels",
+    "output_coordinates": "144 baseline-corrected Hb response means/slopes, not full temporal waveforms",
+    "api_repairs": [
+      "Single-protocol inference skips the absent protocol head. Unknown protocol values raise ValueError."
+    ]
+  },
+  "checks": {
+    "pytest_file": "tests/test_m10_hb.py",
+    "passed": 4,
+    "coverage": [
+      "low-rank NLL versus torch MultivariateNormal",
+      "learned temporal-logit gradient",
+      "EEG-only inference without target encoder",
+      "single-protocol Hb inference and rejection of unknown protocols"
+    ]
+  },
+  "scope": "M10 and the Hb response generator are distinct implementations within a common source-to-target framework. These checks establish source equivalence and checkpoint replay, not replication of every manuscript figure or shared BOLD/Hb weights."
+}

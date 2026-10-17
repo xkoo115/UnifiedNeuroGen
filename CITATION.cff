@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "Please cite the accompanying manuscript when using this software."
+title: "UnifiedNeuroGen: EEG-conditioned haemodynamic generation"
+type: software
+version: 0.2.0
+date-released: 2026-10-16
+repository-code: "https://github.com/xkoo115/UnifiedNeuroGen"
+authors:
+  - family-names: Yao
+    given-names: Weiheng
+  - family-names: Jing
+    given-names: Changhong
+  - family-names: Chen
+    given-names: Xuhang
+  - family-names: Wei
+    given-names: Xunbin
+  - family-names: Zhang
+    given-names: Shihua
+  - family-names: Pun
+    given-names: Chi-Man
+  - family-names: Ng
+    given-names: Michael Kwok-Po
+  - family-names: Wang
+    given-names: Shuqiang
+preferred-citation:
+  type: unpublished
+  title: "A generative framework for unified representations bridging electrophysiological and haemodynamic brain activity"
+  year: 2026
+  authors:
+    - family-names: Yao
+      given-names: Weiheng
+    - family-names: Jing
+      given-names: Changhong
+    - family-names: Chen
+      given-names: Xuhang
+    - family-names: Wei
+      given-names: Xunbin
+    - family-names: Zhang
+      given-names: Shihua
+    - family-names: Pun
+      given-names: Chi-Man
+    - family-names: Ng
+      given-names: Michael Kwok-Po
+    - family-names: Wang
+      given-names: Shuqiang

@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "prediction_max_absolute_errors": {
+    "m01_vs_saved": 2.525039614020841e-05,
+    "m02_vs_saved": 7.435781934628238e-09,
+    "m02_relative_vs_saved_relative": 1.3533513490426863e-08
+  },
+  "weighted_ridge_vs_original_exact_source_errors": {
+    "input_mean": 0.0,
+    "target_mean": 0.0,
+    "weight": 0.0
+  },
+  "released_dtypes": {
+    "m01": "float64",
+    "m02": "float64"
+  },
+  "saved_dtype": "float32",
+  "m01_scope": "Complete retained run EEG generates dynamics and log-SD context; no observed target at inference",
+  "m02_scope": "Fitting-standardized target coordinates; relative=True subtracts each frame ROI mean before inverse target scaling",
+  "tolerances": {
+    "m01_absolute": 3e-05,
+    "m01_basis": "Original independent source verifier scripts/verify_functional_bold_practice_20261001.py lines24-31 already uses absolute error <3e-5 for dynamic/log-SD and normalized generated sequences.",
+    "m02_absolute": 1e-07,
+    "weighted_ridge_exact": true
+  },
+  "precision_notes": "Source runner stores dynamics and predicted log-SD in float32 buffers before normalizing; portable run API keeps floating-point intermediate precision and transforms one run rather than the original batched context. The observed difference is within the original independent verifier tolerance.",
+  "unit_tests": {
+    "path": "tests/test_linear.py",
+    "passed": 4,
+    "checks": [
+      "weighted equal-person Ridge versus sklearn sample_weight solution",
+      "M01 whole-run EEG context and predicted response SD",
+      "M02 standardized coordinate boundary and regional-relative subtraction",
+      "malformed history rejection"
+    ]
+  },
+  "schema_version": 1,
+  "verified_run": {
+    "participant": "sub-01",
+    "run_key": "sub-01_task-dme_run-01",
+    "retained_frames": 103,
+    "all_retained_run_rows": true,
+    "fold": 0,
+    "fold_role": "evaluate",
+    "source_index_range": [
+      7,
+      109
+    ]
+  },
+  "selection_rule": "First sorted participant assigned to fold-0 evaluation, then first sorted available run; all 103 retained rows of that run. No outcome-based run selection.",
+  "source_files": [
+    {
+      "path": "scripts/run_functional_bold_practice_20261001.py",
+      "sha256": "97f9cd20b4fa25a5c4b3fc295ba1b4cad24e89c970ff2fc02703440d22e991bc"
+    },
+    {
+      "path": "scripts/rescue_natview_oof_bold_20261001.py",
+      "sha256": "ba1f381f997e57eb803ce46ce22f79a818c36ac32212d12bb01a5c32a2e148d8"
+    },
+    {
+      "path": "results/functional_claim_practice_20261001/bold/fold0/new_dynamic_head.joblib",
+      "sha256": "cf546371d8bc7b2ebeb275192709d40a375110ab106dad192450803c8d3267b8"
+    },
+    {
+      "path": "results/functional_claim_practice_20261001/bold/fold0/new_functional_head.joblib",
+      "sha256": "0af6d638d3401b20fbfd5bacf381d1a868c47b936e7c3ae9ffca1da9b76c8970"
+    },
+    {
+      "path": "results/rescue_fig2_fig4_20261001/natview_subject_oof/fold0_models_and_scalers.joblib",
+      "sha256": "6bed2812a5865126910a79463773b0a76e803b10bdbaafd9e5166cd6ba08fb57"
+    },
+    {
+      "path": "src/unifiedneurogen/linear.py",
+      "sha256": "a4f6d24c15d2ba5e9d14d79bffa5825b109497b4a17d605cb00d43e88b6c4331",
+      "role": "released_module"
+    },
+    {
+      "path": "scripts/verify_functional_bold_practice_20261001.py",
+      "sha256": "d36f379cc370551dcff58dbb203e0fd230013a9a88e369d1d0de2f017881ec0d"
+    },
+    {
+      "path": "results/functional_claim_practice_20261001/bold/raw_eeg_history.npz",
+      "sha256": "62facb3053dad17d518dcdbcb49b9e9069841bb00618db234f22f1b772ae9954"
+    },
+    {
+      "path": "results/functional_claim_practice_20261001/bold/all_new_oof_bold_predictions.npz",
+      "sha256": "bc17dcceea730ed0d512553a726c3b0cb0ccbafb9f79d41b8fc4da04e38cf70f"
+    },
+    {
+      "path": "results/rescue_fig2_fig4_20261001/natview_subject_oof/all_out_of_fold_predictions_and_truth.npz",
+      "sha256": "2b8588cc3152d638536323e748a604c7251b1abcc42ddc944baae042a238a0c9"
+    }
+  ],
+  "scope": "Replays EEG-only generation from original M01/M02 saved heads; does not include downstream readers or complete figure/statistical reproduction."
+}

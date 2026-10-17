@@ -1,0 +1,11 @@
+{
+  "input_size": 2560,
+  "in_channels": 1,
+  "hidden_size": 1200,
+  "depth": 24,
+  "num_heads": 12,
+  "patch_size": 4,
+  "learn_sigma": true,
+  "cond_channels": 2560,
+  "cond_width": 1200
+}

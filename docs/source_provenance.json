@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "purpose": "Auditable source extraction; all operations and parameter names/shapes in retained original model nodes are preserved.",
+  "public_original": {
+    "repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+    "commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a",
+    "license": "MIT (2025 xkoo115), with third-party notices retained",
+    "source_file": "models.py",
+    "source_sha256": "c12ab8cf379fbef38faa63d69164ac0689062115eb59d517d2461b42e825e2e7",
+    "release_file": "src/unifiedneurogen/dit.py",
+    "release_sha256": "668cdf83c116d45a597f650b6e242b731e9e6b14074fddc4cc9c39d8d60ef401",
+    "nodes": {
+      "Mlp": {
+        "source_lines": [
+          52,
+          69
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "Attention": {
+        "source_lines": [
+          72,
+          175
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "TimestepEmbedder": {
+        "source_lines": [
+          479,
+          516
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "CrossAttention": {
+        "source_lines": [
+          578,
+          621
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "DiTBlockWithCrossAttention": {
+        "source_lines": [
+          624,
+          643
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "modulate": {
+        "source_lines": [
+          646,
+          649
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "FinalLayer": {
+        "source_lines": [
+          651,
+          672
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "Adaptor": {
+        "source_lines": [
+          687,
+          719
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "PatchEmbed1D": {
+        "source_lines": [
+          775,
+          823
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "DiT": {
+        "source_lines": [
+          826,
+          1000
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": false
+      },
+      "get_1d_sincos_pos_embed": {
+        "source_lines": [
+          1205,
+          1211
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": true
+      },
+      "DiT_fMRI": {
+        "source_lines": [
+          1288,
+          1289
+        ],
+        "idit_ast_identical": true,
+        "release_ast_identical_without_docstrings": true,
+        "gdit_ast_identical": false
+      }
+    }
+  },
+  "author_hb_archive": {
+    "source_file": "gdit/models.py",
+    "source_sha256": "46afaaf733ac77e6eb6855105610a32a9471e7dff2b9756308284458ea2e3917",
+    "repository": null,
+    "commit": null,
+    "provenance": "Author-supplied original gdit source archive; no verifiable standalone public Git revision is supplied. Shared code is identical to the public original repository above.",
+    "release_file": "src/unifiedneurogen/gdit.py",
+    "release_sha256": "e8a355af50924d041be7b5ccdbf7e43471e418cea822214afc5656ec77935708",
+    "retained_nodes": {
+      "DiT": true,
+      "DiT_fMRI": true
+    },
+    "shared_nodes_imported_from_dit": {
+      "Mlp": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "Attention": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "TimestepEmbedder": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "CrossAttention": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "DiTBlockWithCrossAttention": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "modulate": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "FinalLayer": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "Adaptor": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "PatchEmbed1D": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      },
+      "get_1d_sincos_pos_embed": {
+        "ast_identical_to_gdit": true,
+        "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+        "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a"
+      }
+    },
+    "production_config": {
+      "input_size": 128,
+      "in_channels": 144,
+      "hidden_size": 1000,
+      "depth": 28,
+      "num_heads": 10,
+      "patch_size": 1,
+      "cond_channels": 144,
+      "cond_width": 1000,
+      "learn_sigma": true
+    },
+    "checkpoint_availability": "No pretrained Hb DiT checkpoint located; architecture and training/sampling source only."
+  },
+  "diffusion": {
+    "public_repository": "https://github.com/xkoo115/UnifiedNeuroGen",
+    "public_commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a",
+    "files": {
+      "__init__.py": {
+        "source_sha256": "0128da38ee27ab91b78458809f9c50d188d7377b60cc73d3ee777bca8029425d",
+        "release_sha256": "565fd004662de479c9481a2af35705185563efd39f41b8d7e2df9d61b8c1b19f",
+        "ast_identical_without_docstrings": true
+      },
+      "gaussian_diffusion.py": {
+        "source_sha256": "4658dfe268a05715da22851a9bc198d1b5e4f6f1c7feb1088d72cbd462bb630a",
+        "release_sha256": "567fdaa67eb31be4db93c481665dd5c83c0ad0262903de00d37838810e6c4a77",
+        "ast_identical_without_docstrings": true
+      },
+      "respace.py": {
+        "source_sha256": "7c9bb5ccbb037e78c4ef1414770251a0ed70f1fb330f5a682de5d1594b102de1",
+        "release_sha256": "d7d5a2231db569b3aa5f03b305dedd7cbea93a92fe629ce1fe472602414f8266",
+        "ast_identical_without_docstrings": true
+      },
+      "diffusion_utils.py": {
+        "source_sha256": "4bc929a713a1136bd96b5d88605f41707bf484fbabe448b0407764eb21502add",
+        "release_sha256": "94db46ef8db0fa1cb057afffc389acae96925b8eb890cfc197d49a90bc33c29b",
+        "ast_identical_without_docstrings": true
+      }
+    },
+    "original_upstreams": [
+      "https://github.com/openai/glide-text2im",
+      "https://github.com/openai/guided-diffusion",
+      "https://github.com/openai/improved-diffusion"
+    ]
+  },
+  "comparison_method": "Parse source and release as Python AST; remove docstring expression nodes only; compare ast.dump(include_attributes=False). Comments, dead commented code, import removal and formatting do not affect retained operation AST. The build_model wrappers are new configuration checks outside original model classes.",
+  "preserved_behavior": [
+    "CrossAttention derives both keys and values by reshaping k_proj(c); v_proj is registered but unused.",
+    "CrossAttention returns x+attended_values; its caller adds this result to x again.",
+    "FinalLayer conditions on embedded EEG c, not all_conditioning=t+c.",
+    "DiT retains its original forward_with_cfg method, which is not used by the release sampling interface."
+  ],
+  "legacy_methods": "forward_with_cfg remains in the original class for source equivalence; supported release commands use ordinary conditional forward and DDIM with eta=0 only.",
+  "cleanup": "Unused LaBraM/DiT_Pretrained/artwork helpers, imports and commented experiments were removed; copyright, upstream attribution and license notices remain.",
+  "runtime_original_parity": {
+    "fmri": {
+      "same_seed_initialization_all_tensors_equal": true,
+      "strict_state_dict_compatible": true,
+      "state_keys": 38,
+      "nonzero_output_exactly_equal": true,
+      "output_shape": [
+        2,
+        2,
+        32
+      ],
+      "max_abs_difference": 0.0,
+      "production_parameter_count": 560943288
+    },
+    "hb": {
+      "same_seed_initialization_all_tensors_equal": true,
+      "strict_state_dict_compatible": true,
+      "state_keys": 38,
+      "nonzero_output_exactly_equal": true,
+      "output_shape": [
+        2,
+        4,
+        8
+      ],
+      "max_abs_difference": 0.0,
+      "production_parameter_count": 452360360
+    }
+  },
+  "software_tests": {
+    "files": [
+      "tests/test_dit.py",
+      "tests/test_dit_cli.py"
+    ],
+    "passed": 22,
+    "scope": "Original API objective/backprop/DDIM and configuration checks, plus both branches through CLI 1epoch/4step EEG-only sampling on tiny random inputs."
+  },
+  "formatting": "Black formatting applied after extraction; semantic AST checks and scientific operations unchanged."
+}

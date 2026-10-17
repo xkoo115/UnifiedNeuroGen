@@ -1,0 +1,17 @@
+{
+  "feature_dim": 2928,
+  "token_features": 366,
+  "target_dim": 64,
+  "condition_count": 4,
+  "time_tokens": 8,
+  "width": 128,
+  "heads": 8,
+  "depth": 4,
+  "hrf_banks": 4,
+  "query_tokens": 8,
+  "activity_dim": 64,
+  "context_dim": 64,
+  "covariance_rank": 4,
+  "dropout": 0.1,
+  "activity_bottleneck_mean": true
+}

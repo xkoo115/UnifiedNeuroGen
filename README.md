@@ -13,7 +13,11 @@ Core implementations accompanying the manuscript<br><em>A generative framework f
 </div>
 
 <p align="center">
-  <img src="assets/overview.svg" alt="Core generation workflow: prepared EEG inputs, fitted representations, target-specific models, and haemodynamic outputs." width="100%">
+  <a href="assets/paper-framework.pdf"><img src="assets/paper-framework.png" alt="Figure 1 from the manuscript: brain function signals, the unified representation framework, generation examples and downstream applications." width="900"></a>
+</p>
+<p align="center">
+  <em>Figure 1 from the accompanying manuscript.</em> <a href="assets/paper-framework.pdf">Original PDF</a><br>
+  <sub>The anatomical head surface is adapted from Servier Medical Art by Servier under CC BY 3.0.</sub>
 </p>
 
 ## Overview

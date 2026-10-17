@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="336" viewBox="0 0 1200 336" role="img" aria-labelledby="title desc">
+  <title id="title">UnifiedNeuroGen core generation workflow</title>
+  <desc id="desc">Prepared EEG inputs pass through saved transformations and target-specific generators to produce BOLD and haemoglobin representations. The implementations have distinct fitted models within a shared representation workflow.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0f6ff"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="1198" height="334" rx="20" fill="url(#background)" stroke="#dbe5f1"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="36" y="28" width="230" height="26" rx="13" fill="#dbeafe"/>
+    <text x="151" y="45" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1.2" fill="#1d4ed8">CORE GENERATION WORKFLOW</text>
+    <text x="36" y="94" font-size="29" font-weight="700" fill="#0f172a">From EEG to haemodynamic representations</text>
+    <g fill="white" stroke="#dbe5f1">
+      <rect x="36" y="124" width="258" height="150" rx="12"/>
+      <rect x="326" y="124" width="258" height="150" rx="12"/>
+      <rect x="616" y="124" width="258" height="150" rx="12"/>
+      <rect x="906" y="124" width="258" height="150" rx="12"/>
+    </g>
+    <g fill="url(#accent)">
+      <rect x="56" y="144" width="34" height="25" rx="7"/>
+      <rect x="346" y="144" width="34" height="25" rx="7"/>
+      <rect x="636" y="144" width="34" height="25" rx="7"/>
+      <rect x="926" y="144" width="34" height="25" rx="7"/>
+    </g>
+    <g font-size="12" font-weight="700" fill="white" text-anchor="middle">
+      <text x="73" y="161">01</text>
+      <text x="363" y="161">02</text>
+      <text x="653" y="161">03</text>
+      <text x="943" y="161">04</text>
+    </g>
+    <g font-size="18" font-weight="700" fill="#0f172a">
+      <text x="56" y="201">EEG inputs</text>
+      <text x="346" y="201">Fitted representations</text>
+      <text x="636" y="201">Target-specific models</text>
+      <text x="926" y="201">Haemodynamic outputs</text>
+    </g>
+    <g font-size="14" fill="#475569">
+      <text x="56" y="230">Precomputed encodings</text>
+      <text x="56" y="252">or prepared EEG features</text>
+      <text x="346" y="230">Saved scalers and projections</text>
+      <text x="346" y="252">Branch-specific coordinates</text>
+      <text x="636" y="230">Original DiT · M10</text>
+      <text x="636" y="252">M06 · M01 / M02</text>
+      <text x="926" y="230">BOLD surfaces and regions</text>
+      <text x="926" y="252">Haemoglobin representations</text>
+    </g>
+    <g stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M 301 199 H 318"/>
+      <path d="M 591 199 H 608"/>
+      <path d="M 881 199 H 898"/>
+    </g>
+    <text x="36" y="310" font-size="14" fill="#64748b">Distinct fitted models within a shared representation workflow.</text>
+  </g>
+</svg>

@@ -1,12 +1,28 @@
+[← Repository](../README.md) · [Documentation](README.md)
+
 # Methods and model correspondence
 
-The manuscript uses a common representation workflow: prepare EEG features, fit source and target transformations, generate target-domain coordinates, and apply the corresponding output transformation. The experiments use separate fitted implementations within that workflow. The model names below identify those implementations.
+The manuscript follows a common representation workflow: prepare EEG features, fit source and target transformations, generate target-domain coordinates, and apply the corresponding output transformation. The experiments use separate fitted implementations within that workflow. This page identifies each implementation and its relationship to the manuscript results.
 
-Figure 1 shows the overall framework, including upstream feature extraction. The original diffusion models accept precomputed EEG encodings. M10 uses EEG log-power features and fitted target PCA coordinates; M06 uses EEG response features and a pooled fitted projection. The M10 demo starts from prepared arrays and does not run pretrained EEG or fMRI encoders.
+**On this page:** [Model guide](#model-guide) · [M10](#conditional-bold-generation-m10) · [M06](#haemoglobin-response-generation-m06) · [M01 and M02](#regional-bold-generation-m01-and-m02) · [Diffusion models](#original-diffusion-models) · [Figure correspondence](#models-used-by-manuscript-result-groups)
+
+## Model guide
+
+| Branch | Input and representation | Generated output |
+| --- | --- | --- |
+| **M10** | EEG log-power features; fitted target PCA coordinates | Conditional Gaussian over standardized BOLD PCA coordinates |
+| **M06** | EEG response features; pooled fitted EEG projection | HbO/HbR response means and slopes |
+| **M01** | EEG history; dynamic and run-scale heads | Regional BOLD sequence, centred and scaled within the retained run |
+| **M02** | EEG history; separately fitted regional linear map | Fitting-standardized regional BOLD predictions |
+| **Original DiT models** | Precomputed EEG encodings; branch-specific adaptors | BOLD or Hb targets through conditional diffusion sampling |
+
+Figure 1 includes upstream feature extraction as part of the overall framework. The M10 demo starts from prepared arrays and does not run pretrained EEG or fMRI encoders. Sharing a representation workflow does not imply shared transformations or weights across these branches.
 
 ## Conditional BOLD generation: M10
 
 M10 generates a conditional Gaussian over 64 standardized target PCA coordinates from 2,928 EEG log-power features. Its mean combines a fitted Ridge anchor with an attention residual. EEG history contains eight tokens, each with 366 features.
+
+### Manuscript equations
 
 | Manuscript method | Implementation |
 | --- | --- |
@@ -15,11 +31,34 @@ M10 generates a conditional Gaussian over 64 standardized target PCA coordinates
 | Eq. (9): fitted anchor plus attention residual | `ConditionedFactorizedDecoder.forward` adds the fitted linear prediction to the learned residual. |
 | Eq. (10): likelihood and representation constraints | `m10_loss` combines Gaussian NLL, symmetric paired activity alignment, EEG and target activity-state cross entropy, and activity/context orthogonality. |
 
-The loss weights are 0.10 for paired alignment, 0.20 for each activity-state cross entropy, and 0.01 for the squared inner product between normalized activity and context codes. The four activity states are fitted by KMeans on the first eight target PCA coordinates from fitting participants. Targets and state labels supervise fitting; inference uses EEG alone.
+### Training objective and supervision
 
-`configs/m10.json` specifies width 128, four attention blocks, eight heads, 64 activity and context coordinates, dropout 0.1 and four covariance-factor columns. The supplied historical checkpoint has zero covariance factors, so its generated distribution is diagonal Gaussian. The architecture also supports nonzero low-rank factors.
+The objective combines Gaussian NLL with the following representation constraints.
 
-The training command uses the historical settings below. `--seed` controls model initialization and minibatch order; the activity-state seed is fixed separately.
+| Constraint | Weight |
+| --- | --- |
+| Symmetric paired activity alignment | `0.10` |
+| EEG activity-state cross entropy | `0.20` |
+| Target activity-state cross entropy | `0.20` |
+| Squared inner product between normalized activity and context codes | `0.01` |
+
+The four activity states are fitted by KMeans on the first eight target PCA coordinates from fitting participants. Targets and state labels supervise fitting; inference uses EEG alone.
+
+### Architecture and checkpoint
+
+| Setting | `configs/m10.json` |
+| --- | --- |
+| Width | `128` |
+| Attention blocks / heads | `4` / `8` |
+| Activity / context coordinates | `64` / `64` |
+| Dropout | `0.1` |
+| Covariance-factor columns | `4` |
+
+The supplied historical checkpoint has **zero covariance factors**, so its generated distribution is diagonal Gaussian. The architecture also supports nonzero low-rank factors. The supplied fold-01 seed-7 checkpoint retains its original weights and fitted anchor.
+
+### Historical training settings
+
+The training command uses the settings below. `--seed` controls model initialization and minibatch order; the activity-state seed is fixed separately.
 
 | Setting | Default |
 | --- | --- |
@@ -30,19 +69,24 @@ The training command uses the historical settings below. `--seed` controls model
 | Activity-state clustering | `n_init=20`, `random_state=20260830` |
 | Saved model selection | Minimum tuning-participant reconstruction MSE, including epoch zero |
 
-The README's two-epoch, batch-16 example refits the small demo subset. Full-cohort retraining also requires the original fitting-participant transformations and fold data. The supplied fold-01 seed-7 checkpoint retains its original weights and fitted anchor.
+The README's two-epoch, batch-16 example refits the small demo subset. Full-cohort retraining also requires the original fitting-participant transformations and fold data.
 
 ## Haemoglobin response generation: M06
 
 M06 implements the pooled response model described with Eq. (12). It fits one EEG scaler/PCA/PLS projection across motor imagery (MI) and mental arithmetic (MA), with a separate regularized response head for each acquisition paradigm. The input `tasks` selects MI or MA; it is not the within-paradigm class label.
 
-Each prediction contains 144 HbO/HbR mean and slope coordinates, using the response windows documented in [data formats](data.md). These are response summaries rather than full haemoglobin waveforms. The shared EEG projection belongs to the M06 branch; the BOLD models have their own fitted transformations and weights. `configs/hb.json` gives one fixed candidate configuration. The original experiments selected configurations per fold.
+Each prediction contains **144 HbO/HbR mean and slope coordinates**, using the response windows documented in [data formats](data.md). These outputs are response summaries rather than full haemoglobin waveforms.
+
+The shared EEG projection belongs to the M06 branch; the BOLD models have their own fitted transformations and weights. `configs/hb.json` gives one fixed candidate configuration. The original experiments selected configurations per fold.
 
 ## Regional BOLD generation: M01 and M02
 
-M01 combines a weighted Ridge dynamic head with an EEG-to-run-log-SD head. Its generated sequence is centred and scaled within the retained run. `linear.predict_m01` therefore takes a complete run of EEG history and provides offline generation.
+| Model | Implementation | Output convention |
+| --- | --- | --- |
+| **M01** | Weighted Ridge dynamic head and EEG-to-run-log-SD head; `linear.predict_m01` | Sequence centred and scaled within the retained run |
+| **M02** | Separately fitted regional linear map; `linear.predict_m02` | Fitting-standardized regional predictions, with optional removal of each frame's regional mean |
 
-M02 uses a separately fitted regional linear map. `linear.predict_m02` returns fitting-standardized regional predictions and can remove each frame's regional mean. The fixed double-gamma history candidate in these linear models is separate from M10's learned temporal weighting.
+M01 takes a **complete run** of EEG history and provides offline generation. The fixed double-gamma history candidate in these linear models is separate from M10's learned temporal weighting.
 
 ## Original diffusion models
 
@@ -52,18 +96,34 @@ The two branches have different adaptors, encoded inputs and target shapes. Thei
 
 ## Models used by manuscript result groups
 
-| Figure or result group | Generator or analysis source | Included here |
+### Generation and downstream results
+
+| Manuscript result | Generator | Release coverage |
 | --- | --- | --- |
-| Fig. 2c-d, f-h: regional dynamics, scale and generated-signal readout | M01, followed by result-specific aggregation or readout | Generation primitives accepting saved-head objects |
+| Fig. 2c-d, f-h: regional dynamics, scale and generated-signal readout | M01; result-specific aggregation or readout follows generation | Generation primitives accepting saved-head objects |
 | Fig. 2e: regional-relative correspondence | M02 | Generation primitive accepting saved-head objects |
-| Fig. 4c-d: locked Hb decoding and spatial response contrasts | M06, followed by locked readers or response contrasts | Pooled projection and response heads |
-| Fig. 5a-b: BOLD decoding | M10 conditional means, followed by separate decoding analyses | M10 generator; downstream readers are separate |
-| Fig. 6a-f: low-sample augmentation | Frozen M10 conditional means, followed by augmentation and decoding | M10 generator; augmentation experiments are separate |
-| Fig. 4e: bidirectional retrieval | M07 paired feature-space retrieval | Separate analysis |
-| Fig. 4f: calibrated intervals | M09 residual calibration | Separate analysis |
-| Fig. 4g: directional transfer | M08 baseline CCA and directional readers | Separate analysis |
-| Fig. 1, Fig. 2a, Fig. 3 and Fig. 4a-b: retained framework, cortical/network and waveform illustrations | Archived manuscript material | Original framework figure and diffusion source; a complete checkpoint-to-panel replay is not established |
-| Fig. 2b: displayed participant traces | Revised trace assembly | Complete trace-to-checkpoint provenance has not been verified |
-| Fig. 5c: external localization | Retained NODDI/Parkinson localization analysis | Separate archived analysis |
+| Fig. 4c-d: locked Hb decoding and spatial response contrasts | M06; locked readers or response contrasts follow generation | Pooled projection and response heads |
+| Fig. 5a-b: BOLD decoding | M10 conditional means | M10 generator; decoding analyses and readers are separate |
+| Fig. 6a-f: low-sample augmentation | Frozen M10 conditional means | M10 generator; augmentation and decoding experiments are separate |
+
+### Separate analyses
+
+| Manuscript result | Analysis source |
+| --- | --- |
+| Fig. 4e: bidirectional retrieval | M07 paired feature-space retrieval |
+| Fig. 4f: calibrated intervals | M09 residual calibration |
+| Fig. 4g: directional transfer | M08 baseline CCA and directional readers |
+| Fig. 5c: external localization | Retained NODDI/Parkinson localization analysis; separate archived analysis |
+
+### Retained manuscript panels
+
+| Manuscript material | Source and verification scope |
+| --- | --- |
+| Fig. 1, Fig. 2a, Fig. 3 and Fig. 4a-b: framework, cortical/network and waveform illustrations | Archived manuscript material. The original framework figure and diffusion source are included; a complete checkpoint-to-panel replay is not established. |
+| Fig. 2b: displayed participant traces | Revised trace assembly. Complete trace-to-checkpoint provenance has not been verified. |
 
 The demo verifies one M10 checkpoint against saved predictions. Complete figure reproduction also requires the original fold data, model-specific checkpoints and downstream analysis scripts. File hashes and source comparisons are recorded in `source_provenance*.json`.
+
+---
+
+**Related documentation:** [Data and demo](data.md) · [Diffusion interfaces](original_dit_interfaces.md) · [Source provenance](sources.md) · [Environment](environment.md)

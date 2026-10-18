@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "purpose": "Auditable source extraction; all operations and parameter names/shapes in retained original model nodes are preserved.",
+  "purpose": "Original diffusion model sources, file hashes and compatibility checks.",
   "public_original": {
     "repository": "https://github.com/xkoo115/UnifiedNeuroGen",
     "commit": "427a4f342ebd0494690a6b4c31186c2084b9b22a",
@@ -8,7 +8,7 @@
     "source_file": "models.py",
     "source_sha256": "c12ab8cf379fbef38faa63d69164ac0689062115eb59d517d2461b42e825e2e7",
     "release_file": "src/unifiedneurogen/dit.py",
-    "release_sha256": "668cdf83c116d45a597f650b6e242b731e9e6b14074fddc4cc9c39d8d60ef401",
+    "release_sha256": "8fdddd020f7b92cc4dda043d23e9a948ab16a014d5c885e9152630f0aa76d863",
     "nodes": {
       "Mlp": {
         "source_lines": [
@@ -127,7 +127,7 @@
     "commit": null,
     "provenance": "Author-supplied original gdit source archive; no verifiable standalone public Git revision is supplied. Shared code is identical to the public original repository above.",
     "release_file": "src/unifiedneurogen/gdit.py",
-    "release_sha256": "e8a355af50924d041be7b5ccdbf7e43471e418cea822214afc5656ec77935708",
+    "release_sha256": "18f7e4f3e82854a97457337ae89cc3f6241c0660b74a1cea7aee50136431a38a",
     "retained_nodes": {
       "DiT": true,
       "DiT_fMRI": true
@@ -228,15 +228,14 @@
       "https://github.com/openai/improved-diffusion"
     ]
   },
-  "comparison_method": "Parse source and release as Python AST; remove docstring expression nodes only; compare ast.dump(include_attributes=False). Comments, dead commented code, import removal and formatting do not affect retained operation AST. The build_model wrappers are new configuration checks outside original model classes.",
+  "comparison_method": "Compare ast.dump(include_attributes=False) of retained source nodes after removing docstrings. Configuration factories are outside this comparison.",
   "preserved_behavior": [
     "CrossAttention derives both keys and values by reshaping k_proj(c); v_proj is registered but unused.",
     "CrossAttention returns x+attended_values; its caller adds this result to x again.",
     "FinalLayer conditions on embedded EEG c, not all_conditioning=t+c.",
     "DiT retains its original forward_with_cfg method, which is not used by the release sampling interface."
   ],
-  "legacy_methods": "forward_with_cfg remains in the original class for source equivalence; supported release commands use ordinary conditional forward and DDIM with eta=0 only.",
-  "cleanup": "Unused LaBraM/DiT_Pretrained/artwork helpers, imports and commented experiments were removed; copyright, upstream attribution and license notices remain.",
+  "legacy_methods": "forward_with_cfg is retained from the original class but unsupported. Training and sampling use conditional forward and DDIM with eta=0.",
   "runtime_original_parity": {
     "fmri": {
       "same_seed_initialization_all_tensors_equal": true,
@@ -272,6 +271,5 @@
     ],
     "passed": 22,
     "scope": "Original API objective/backprop/DDIM and configuration checks, plus both branches through CLI 1epoch/4step EEG-only sampling on tiny random inputs."
-  },
-  "formatting": "Black formatting applied after extraction; semantic AST checks and scientific operations unchanged."
+  }
 }

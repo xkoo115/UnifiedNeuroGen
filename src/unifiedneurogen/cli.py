@@ -1,4 +1,4 @@
-"""Portable training and EEG-only generation entry points."""
+"""Training and sampling commands for EEG-conditioned generation."""
 
 import argparse
 import copy
@@ -134,9 +134,9 @@ def train_m10(args):
     y = encode_target(data["targets"], transform)
     if len(x) != len(y) or len(x) != len(data["split"]):
         raise ValueError("EEG, targets and split lengths must agree")
-    anchor = Ridge(alpha=args.ridge_alpha).fit(x[fit], y[fit])
+    anchor = Ridge(alpha=args.ridge_alpha, solver="lsqr", tol=1e-5).fit(x[fit], y[fit])
     cluster = KMeans(
-        n_clusters=config["condition_count"], n_init=10, random_state=args.seed
+        n_clusters=config["condition_count"], n_init=20, random_state=20260830
     ).fit(y[fit, :8])
     conditions = cluster.predict(y[:, :8]).astype(np.int64)
     torch.manual_seed(args.seed)
@@ -208,10 +208,17 @@ def train_m10(args):
             best_epoch=best_epoch,
             best_tune_mse=best_mse,
             ridge_alpha=args.ridge_alpha,
+            ridge_solver="lsqr",
+            ridge_tolerance=1e-5,
+            condition_seed=20260830,
+            condition_n_init=20,
+            batch_size=args.batch_size,
+            epochs=args.epochs,
+            patience=args.patience,
             fitting_rows=fit.tolist(),
             tuning_rows=tune.tolist(),
             history=history,
-            scope="Portable core training; supplied transforms must already be fitting-only. No paper metric reproduction.",
+            scope="M10 refit using supplied fit-participant transformations.",
         ),
     )
 
@@ -232,7 +239,7 @@ def train_dit(args):
     ema = copy.deepcopy(model).eval()
     for parameter in ema.parameters():
         parameter.requires_grad_(False)
-    diffusion = create_diffusion("")
+    diffusion = create_diffusion("", learn_sigma=model.learn_sigma)
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=0)
     rng = np.random.default_rng(args.seed)
     history = []
@@ -305,7 +312,7 @@ def sample_dit(args):
             "Expected finite EEG encodings [samples, condition_channels, hidden_size]"
         )
     torch.manual_seed(args.seed)
-    diffusion = create_diffusion(str(args.steps))
+    diffusion = create_diffusion(str(args.steps), learn_sigma=model.learn_sigma)
     generated = []
     for start in range(0, len(eeg), args.batch_size):
         condition = torch.as_tensor(
@@ -436,11 +443,13 @@ def main():
             p.add_argument(f"--{option}", required=True)
         if name != "hb-train":
             p.add_argument("--epochs", type=int, default=12)
-            p.add_argument("--batch-size", type=int, default=256)
+            p.add_argument(
+                "--batch-size", type=int, default=1024 if name == "m10-train" else 256
+            )
         if name == "m10-train":
             p.add_argument("--transform", required=True)
             p.add_argument("--patience", type=int, default=3)
-            p.add_argument("--ridge-alpha", type=float, default=100.0)
+            p.add_argument("--ridge-alpha", type=float, default=1000.0)
         if name == "dit-train":
             p.add_argument("--branch", choices=["fmri", "hb"], default="fmri")
         p.set_defaults(function=function)

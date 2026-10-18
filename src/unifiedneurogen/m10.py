@@ -64,7 +64,7 @@ def m10_loss(
     classification_weight=0.20,
     orthogonality_weight=0.01,
 ):
-    """Exact M10 NLL, paired alignment, state classification and orthogonality."""
+    """Gaussian NLL with paired alignment, state supervision and orthogonality."""
     return low_rank_gaussian_nll(output, target) + factorized_condition_loss(
         output,
         model.encode_target_activity(target),

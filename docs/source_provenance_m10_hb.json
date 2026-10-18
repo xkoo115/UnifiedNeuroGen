@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "PASS",
-  "source_revision": "local research source preserved at release preparation",
+  "source_revision": "Research source snapshot identified by the file hashes below.",
   "source_files": [
     {
       "path": "src/neurovascular_decoder/latent_decoder.py",
@@ -19,7 +19,7 @@
   "released_files": [
     {
       "path": "src/unifiedneurogen/m10.py",
-      "sha256": "f3c4e795654c3a0e52802b23969df25c33a61a72d03c50d5584de388390dfc21"
+      "sha256": "0ea81bbceb420aad51bd8287e1162968ba085c00b29d63d0eb68d3e5ba186ab0"
     },
     {
       "path": "src/unifiedneurogen/hb.py",
@@ -48,7 +48,8 @@
     "saved_demo_reference_max_absolute_error": 2.384185791015625e-07,
     "input_standardization": "(features - feature_mean) / feature_std; float32; no clipping",
     "inference_inputs": "EEG only; target data and within-paradigm class labels are not inputs",
-    "output_coordinates": "64 fitting-fold standardized target PCA coordinates; inverse projection restores run-centred prepared surface coordinates"
+    "output_coordinates": "64 fitting-fold standardized target PCA coordinates; inverse projection restores run-centred prepared surface coordinates",
+    "checkpoint_covariance": "The included checkpoint has zero covariance factors and therefore a diagonal conditional covariance."
   },
   "hb": {
     "implementation": "One pooled EEG StandardScaler/PCA/PLS encoder with separate MI and MA Ridge response heads",
@@ -67,7 +68,7 @@
     "retrained_vs_saved_original_model_max_absolute_error": 0.0,
     "inference_inputs": "EEG features plus acquisition protocol MI or MA; no within-protocol class labels",
     "output_coordinates": "144 baseline-corrected Hb response means/slopes, not full temporal waveforms",
-    "api_repairs": [
+    "inference_behavior": [
       "Single-protocol inference skips the absent protocol head. Unknown protocol values raise ValueError."
     ]
   },
@@ -81,5 +82,5 @@
       "single-protocol Hb inference and rejection of unknown protocols"
     ]
   },
-  "scope": "M10 and the Hb response generator are distinct implementations within a common source-to-target framework. These checks establish source equivalence and checkpoint replay, not replication of every manuscript figure or shared BOLD/Hb weights."
+  "scope": "M10 checkpoint inference, loss gradients and fixed-configuration Hb fitting were compared with their research sources. Model-to-result correspondence is documented in methods.md."
 }

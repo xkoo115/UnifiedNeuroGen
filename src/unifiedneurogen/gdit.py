@@ -150,10 +150,10 @@ DEMO_CONFIG = {
 
 
 def build_model(config: Mapping | None = None) -> DiT:
-    """Build the preserved Hb DiT for [batch, 144, hidden_size] conditions.
+    """Build the Hb DiT for [batch, 144, hidden_size] conditions.
 
-    The production target is [batch, 144, 128]. DEMO_CONFIG is a small random
-    model for software checks and carries no learned physiological mapping.
+    The production target is [batch, 144, 128]. DEMO_CONFIG defines a small
+    random model for software tests.
     """
     values = dict(PRODUCTION_CONFIG)
     supplied = {} if config is None else dict(config)

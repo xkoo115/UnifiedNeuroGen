@@ -22,11 +22,11 @@ Core implementations accompanying the manuscript<br><em>A generative framework f
 
 ## Overview
 
-UnifiedNeuroGen provides the generation core for mapping EEG to BOLD and haemoglobin representations. The release brings together the original diffusion implementations and the target-specific generators used in the revised work, with portable interfaces for model fitting, saved transformations and inference.
+UnifiedNeuroGen contains the original diffusion implementations and the target-specific generators used in the manuscript. The package supports model fitting and EEG-conditioned inference from prepared features and saved transformations.
 
 - **Generation core.** Original BOLD/Hb DiT, revised M10 and M06 models, and M01/M02 regional generation primitives.
-- **Real CPU demo.** A historical M10 checkpoint and 48 prepared EEG examples, distributed in a separate **8.7 MB** [demo Release](https://github.com/xkoo115/UnifiedNeuroGen/releases/tag/v0.2.0).
-- **Method correspondence.** Explicit model identities, input formats and links between implementations and manuscript results.
+- **CPU demo.** A historical M10 checkpoint and 48 prepared EEG examples, distributed in a separate **8.7 MB** [demo Release](https://github.com/xkoo115/UnifiedNeuroGen/releases/tag/v0.2.0).
+- **Implementation notes.** Model definitions, input formats and correspondence with manuscript results.
 
 The shared element is the representation workflow; individual implementations retain their own target coordinates and fitted weights. See [method and result correspondence](docs/methods.md) for the experimental details.
 
@@ -101,11 +101,12 @@ The outputs use run-centred, preprocessed target coordinates and do not restore 
 | --- | --- | --- |
 | [BOLD DiT](src/unifiedneurogen/dit.py) | Surface EEG encodings → BOLD surface values through DDIM | Original EEG-to-fMRI diffusion generator |
 | [Hb DiT](src/unifiedneurogen/gdit.py) | EEG encodings → stacked haemoglobin tokens through DDIM | Original EEG-to-Hb diffusion generator |
-| [M10](src/unifiedneurogen/m10.py) | 2,928 EEG log-power coordinates → a conditional Gaussian over 64 target PCA coefficients | Revised BOLD generator; checkpoint included in the demo |
-| [M06](src/unifiedneurogen/hb.py) | 1,575 EEG response features → 144 Hb mean/slope coordinates | Pooled EEG projection with MI/MA-specific response heads |
-| [M01 / M02](src/unifiedneurogen/linear.py) | Prepared EEG histories → regional BOLD dynamics/scale coordinates | Generation primitives and saved-head inference |
+| [M10](src/unifiedneurogen/m10.py) | 2,928 EEG log-power coordinates → a conditional Gaussian over 64 target PCA coefficients | Conditional BOLD model in Eqs. (6), (8)-(10); demo checkpoint included |
+| [M06](src/unifiedneurogen/hb.py) | 1,575 EEG response features → 144 Hb mean/slope coordinates | Pooled EEG projection and MI/MA response heads; Fig. 4c-d |
+| [M01](src/unifiedneurogen/linear.py) | Complete-run EEG histories → regional BOLD dynamics and scale | Generation primitives for Fig. 2c-d, f-h |
+| [M02](src/unifiedneurogen/linear.py) | Prepared EEG histories → standardized regional BOLD coordinates | Regional-relative generation for Fig. 2e |
 
-M10 uses a conditional Gaussian model, M06 generates response summaries, and the original diffusion models use their own encoded inputs. [Methods](docs/methods.md) documents their relationship to the revised figures. This core release covers generation; downstream decoding, retrieval, significance testing and figure-production drivers are outside its scope.
+M10 uses a conditional Gaussian model, M06 generates response summaries, and the original diffusion models use their own encoded inputs. [Methods and model correspondence](docs/methods.md) maps the equations and result groups to these implementations. The repository provides generation code; downstream decoding, retrieval, significance testing and figure-production drivers are separate.
 
 ## Training and generation
 
@@ -136,7 +137,7 @@ python -m unifiedneurogen m10-train \
   --output outputs/m10_training
 ```
 
-This small refit uses a newly fitted Ridge anchor, four fitting-derived target states and a user-specified fixed Ridge penalty. It demonstrates training. The historical checkpoint was fitted on its original full fitting cohort.
+This example refits the Ridge anchor and four activity states on the demo's fitting rows. The training defaults use the historical Ridge penalty (`1000`) and activity-state seed (`20260830`); the example overrides the batch size and epoch count for the small subset. The supplied checkpoint was fitted on its original full fitting cohort. See [training settings](docs/methods.md#conditional-bold-generation-m10) for the full defaults.
 
 </details>
 
@@ -181,7 +182,7 @@ For detailed options, run `python -m unifiedneurogen <command> --help`.
 
 | Resource | What it covers |
 | --- | --- |
-| [Methods and result correspondence](docs/methods.md) | Model definitions, objectives and manuscript figure boundaries |
+| [Methods and model correspondence](docs/methods.md) | Equations, training settings and model-to-figure mapping |
 | [Data formats](docs/data.md) | Prepared arrays, shapes and preprocessing requirements |
 | [Original DiT interfaces](docs/original_dit_interfaces.md) | Encoded inputs, checkpoints and portable diffusion interfaces |
 | [Validated environment](docs/validated_environment.txt) | Package versions used for release verification |
@@ -194,7 +195,7 @@ python -m pip install -e '.[test]'
 python -m pytest -q
 ```
 
-Tests cover denoising and DDIM sampling, Gaussian likelihoods, learned temporal weights, fitting/inference boundaries and target transformations. Release verification also compares the real demo's deterministic means against saved historical predictions. Production-scale retraining and complete figure reproduction are outside these checks.
+Tests cover denoising and DDIM sampling, learned and fixed diffusion variance, Gaussian likelihoods, temporal-weight gradients, fitting/inference separation and target transformations. The demo compares deterministic M10 means with saved historical predictions. These checks do not replace full-cohort retraining or figure reproduction.
 
 ## Citation
 

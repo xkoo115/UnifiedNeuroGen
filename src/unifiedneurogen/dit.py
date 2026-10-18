@@ -489,11 +489,11 @@ DEMO_CONFIG = {
 
 
 def build_model(config: Mapping | None = None) -> DiT:
-    """Build the preserved DiT with an explicit input and condition contract.
+    """Build the fMRI DiT from a configuration dictionary.
 
     Condition tensors have shape [batch, 2560, hidden_size]. The adaptor
     changes their channel count while preserving the last feature dimension.
-    DEMO_CONFIG creates a small random model for software checks only.
+    DEMO_CONFIG defines a small random model for software tests.
     """
     values = dict(PRODUCTION_CONFIG)
     supplied = {} if config is None else dict(config)

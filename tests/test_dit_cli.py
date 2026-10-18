@@ -8,8 +8,13 @@ from unifiedneurogen import cli, dit, gdit
 
 
 @pytest.mark.parametrize("name, branch", [("fmri", dit), ("hb", gdit)])
-def test_cli_train_then_sample_with_eeg_only(name, branch, tmp_path, monkeypatch):
-    config = branch.DEMO_CONFIG
+@pytest.mark.parametrize(
+    "learn_sigma", [True, False], ids=["learned-variance", "fixed-variance"]
+)
+def test_cli_train_then_sample_with_eeg_only(
+    name, branch, learn_sigma, tmp_path, monkeypatch
+):
+    config = {**branch.DEMO_CONFIG, "learn_sigma": learn_sigma}
     config_path = tmp_path / "config.json"
     config_path.write_text(json.dumps(config))
     rng = np.random.default_rng(731)
